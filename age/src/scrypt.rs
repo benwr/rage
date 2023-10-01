@@ -15,7 +15,7 @@ use crate::{
 
 pub(super) const SCRYPT_RECIPIENT_TAG: &str = "scrypt";
 const SCRYPT_SALT_LABEL: &[u8] = b"age-encryption.org/v1/scrypt";
-const ONE_SECOND: Duration = Duration::from_secs(1);
+const TEN_MSECS: Duration = Duration::from_millis(10);
 
 const SALT_LEN: usize = 16;
 const ENCRYPTED_FILE_KEY_BYTES: usize = FILE_KEY_BYTES + 16;
@@ -63,7 +63,7 @@ fn target_scrypt_work_factor() -> u8 {
     duration
         .map(|mut d| {
             // Use duration as a proxy for CPU usage, which scales linearly with N.
-            while d < ONE_SECOND && log_n < 63 {
+            while d < TEN_MSECS && log_n < 63 {
                 log_n += 1;
                 d *= 2;
             }
